@@ -23,7 +23,7 @@ public class SimulationController : MonoBehaviour
     public GameObject hand;
 
     private string simDir = "C:/Users/Devin/AppData/LocalLow/DefaultCompany/CS933_Project_Sim/";
-    private string simFile = "2025-03-30_11-33-49-SIM";
+    private string simFile = "2025-04-06_11-50-36-SIM";
 
     private List<List<float>> states;
     private List<List<float>> actions;

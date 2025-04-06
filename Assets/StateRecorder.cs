@@ -13,7 +13,7 @@ public class StateRecorder : MonoBehaviour
     public GameObject targetObject;
 
     public GameObject robot;
-    public float logInterval = 1f / 30f; // 30 Hz (every 0.033s)
+    public float logInterval = 1f / 20f; // 20 Hz (every 0.033s)
     private float timer = 0f;
 
     private string filePath;
@@ -25,16 +25,28 @@ public class StateRecorder : MonoBehaviour
     private bool isVR;
 
     public bool simulation = false;
+    public Camera agentCam;
+
+    private string currentDateTime;
+
 
     // Start is called before the first frame update
     void Start()
     {
         isVR = SceneManager.GetActiveScene().name.Contains("VR");
         startRotation = location.transform.rotation.eulerAngles;
-        string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        filePath = Application.persistentDataPath + $"/{currentDateTime}.txt";
+        currentDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        filePath = Application.persistentDataPath + $"/{currentDateTime}/demo.txt";
         totalTime = 0;
         Debug.Log($"Writing to file: {filePath}");
+
+        if (agentCam.targetTexture == null)
+        {
+            RenderTexture rt = new RenderTexture(256, 256, 24);
+            agentCam.targetTexture = rt;
+        }
+        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime));
+        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "camCaptures"));
 
         demoStarted = true;
         if(isVR){
@@ -47,6 +59,24 @@ public class StateRecorder : MonoBehaviour
         if(!simulation){
             File.AppendAllText(filePath, text);
         }
+    }
+
+    void CamCapture(){
+
+        RenderTexture currentRT = RenderTexture.active;
+        RenderTexture.active = agentCam.targetTexture;
+
+        agentCam.Render();
+
+        Texture2D Image = new Texture2D(agentCam.targetTexture.width, agentCam.targetTexture.height);
+        Image.ReadPixels(new Rect(0, 0, agentCam.targetTexture.width, agentCam.targetTexture.height), 0, 0);
+        Image.Apply();
+        RenderTexture.active = currentRT;
+
+        var Bytes = Image.EncodeToPNG();
+        Destroy(Image);
+
+        File.WriteAllBytes(Application.persistentDataPath + "/" + currentDateTime + "/camCaptures/"  + totalTime + ".png", Bytes);
     }
 
     void CaptureState(){
@@ -67,8 +97,7 @@ public class StateRecorder : MonoBehaviour
         Vector3 targetP = targetObject.transform.position;
         Vector3 targetR = targetObject.transform.rotation.eulerAngles;
         string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, G: {grippedState}";
-        string targetState = $"TX: {targetP.x:F4}, TY: {targetP.y:F4}, TZ: {targetP.z:F4}, TRX: {targetR.x:F4}, TRY: {targetR.y:F4}, TRZ: {targetR.z:F4}";
-        string stateString = $"T: {totalTime}, {robotState}, {targetState}\n";
+        string stateString = $"T: {totalTime}, {robotState}\n";
 
         AppendToFile(stateString);
 
@@ -83,6 +112,7 @@ public class StateRecorder : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= logInterval){
                 CaptureState();
+                CamCapture();
                 timer = 0f; // Reset timer
             }
         }
