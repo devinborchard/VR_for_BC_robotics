@@ -26,6 +26,7 @@ public class StateRecorder : MonoBehaviour
 
     public bool simulation = false;
     public Camera agentCam;
+    public Camera outerCam;
 
     private string currentDateTime;
 
@@ -40,13 +41,13 @@ public class StateRecorder : MonoBehaviour
         totalTime = 0;
         Debug.Log($"Writing to file: {filePath}");
 
-        if (agentCam.targetTexture == null)
-        {
-            RenderTexture rt = new RenderTexture(256, 256, 24);
-            agentCam.targetTexture = rt;
-        }
+        RenderTexture rt = new RenderTexture(84, 84, 24);
+        agentCam.targetTexture = rt;
+        outerCam.targetTexture = rt;
+
         Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime));
-        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "camCaptures"));
+        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "overCaptures"));
+        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "handCaptures"));
 
         demoStarted = true;
         if(isVR){
@@ -61,22 +62,22 @@ public class StateRecorder : MonoBehaviour
         }
     }
 
-    void CamCapture(){
+    void CamCapture(Camera camera, string path){
 
         RenderTexture currentRT = RenderTexture.active;
-        RenderTexture.active = agentCam.targetTexture;
+        RenderTexture.active = camera.targetTexture;
 
-        agentCam.Render();
+        camera.Render();
 
-        Texture2D Image = new Texture2D(agentCam.targetTexture.width, agentCam.targetTexture.height);
-        Image.ReadPixels(new Rect(0, 0, agentCam.targetTexture.width, agentCam.targetTexture.height), 0, 0);
+        Texture2D Image = new Texture2D(camera.targetTexture.width, camera.targetTexture.height);
+        Image.ReadPixels(new Rect(0, 0, camera.targetTexture.width, camera.targetTexture.height), 0, 0);
         Image.Apply();
         RenderTexture.active = currentRT;
 
         var Bytes = Image.EncodeToPNG();
         Destroy(Image);
 
-        File.WriteAllBytes(Application.persistentDataPath + "/" + currentDateTime + "/camCaptures/"  + totalTime + ".png", Bytes);
+        File.WriteAllBytes(Application.persistentDataPath + "/" + currentDateTime + "/"+path+"/"  + totalTime + ".png", Bytes);
     }
 
     void CaptureState(){
@@ -112,7 +113,8 @@ public class StateRecorder : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= logInterval){
                 CaptureState();
-                CamCapture();
+                CamCapture(agentCam, "handCaptures");
+                CamCapture(outerCam, "overCaptures");
                 timer = 0f; // Reset timer
             }
         }

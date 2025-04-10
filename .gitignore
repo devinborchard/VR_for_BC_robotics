@@ -7,3 +7,7 @@ ProjectSettings/
 .vs/
 .vscode/
 .vsconfig
+
+Assets/bc.onnx
+Assets/bc.onnx.meta
+Temp/
