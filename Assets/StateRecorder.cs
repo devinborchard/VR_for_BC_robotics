@@ -10,8 +10,6 @@ public class StateRecorder : MonoBehaviour
 {
     public GameObject location;
 
-    public GameObject targetObject;
-
     public GameObject robot;
     public float logInterval = 1f / 20f; // 20 Hz (every 0.033s)
     private float timer = 0f;
@@ -95,8 +93,6 @@ public class StateRecorder : MonoBehaviour
         int grippedState = 0;
         if(gripping){grippedState = 1;}
 
-        Vector3 targetP = targetObject.transform.position;
-        Vector3 targetR = targetObject.transform.rotation.eulerAngles;
         string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, G: {grippedState}";
         string stateString = $"T: {totalTime}, {robotState}\n";
 
