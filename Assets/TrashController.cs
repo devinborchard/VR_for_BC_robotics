@@ -14,7 +14,7 @@ public class TrashController : MonoBehaviour
     void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("grabbable")){
-            episodeController.GetComponent<EpisodeController>().EndEpisode(true);
+            episodeController.GetComponent<StateRecorder>().done = true;
         }
     }
 

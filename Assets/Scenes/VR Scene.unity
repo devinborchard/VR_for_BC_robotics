@@ -932,6 +932,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MoveTaskScene
       objectReference: {fileID: 0}
+    - target: {fileID: 1393749915068284343, guid: 6ee555b6ab50b184eac9a0d88072cc48, type: 3}
+      propertyPath: episodeController
+      value: 
+      objectReference: {fileID: 1634241534}
     - target: {fileID: 4391335120489113442, guid: 6ee555b6ab50b184eac9a0d88072cc48, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

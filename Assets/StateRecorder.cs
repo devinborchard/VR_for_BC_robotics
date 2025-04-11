@@ -20,6 +20,8 @@ public class StateRecorder : MonoBehaviour
 
     public float totalTime;
     public bool demoStarted;
+    public bool done;
+    private float timeDone = 0;
     private bool isVR;
 
     public bool simulation = false;
@@ -27,7 +29,6 @@ public class StateRecorder : MonoBehaviour
     public Camera outerCam;
 
     private string currentDateTime;
-
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +48,7 @@ public class StateRecorder : MonoBehaviour
         Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "overCaptures"));
         Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "handCaptures"));
 
+        done = false;
         demoStarted = true;
         if(isVR){
             demoStarted = false;
@@ -89,12 +91,15 @@ public class StateRecorder : MonoBehaviour
         else{
             gripping = robot.GetComponent<InputController>().gripping;
         }
+
+        int finished = 0;
+        if(done){finished = 1;}
         
         int grippedState = 0;
         if(gripping){grippedState = 1;}
 
         string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, G: {grippedState}";
-        string stateString = $"T: {totalTime}, {robotState}\n";
+        string stateString = $"T: {totalTime}, {robotState}, D: {finished}\n";
 
         AppendToFile(stateString);
 
@@ -112,6 +117,13 @@ public class StateRecorder : MonoBehaviour
                 CamCapture(agentCam, "handCaptures");
                 CamCapture(outerCam, "overCaptures");
                 timer = 0f; // Reset timer
+            }
+        }
+
+        if(done){
+            timeDone += Time.deltaTime;
+            if(timeDone > 1){
+                gameObject.GetComponent<EpisodeController>().EndEpisode(true);       
             }
         }
     }

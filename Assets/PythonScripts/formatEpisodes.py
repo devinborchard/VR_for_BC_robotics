@@ -175,22 +175,20 @@ def main():
         demoObservations.append(observations)
         demoActions.append(robotActions)
 
-    # print("LEN: ", len(demoObservations))
 
-    assert(len(demoObservations) == len(demoActions))
+    # assert(len(demoObservations) == len(demoActions))
 
-    encodesObservations = encodeObservation(demoObservations)
+    # encodesObservations = encodeObservation(demoObservations)
 
-    max_length = encodesObservations[0].shape[0]
-    padded_actions =pad_action_sequences(demoActions, max_length)
+    # max_length = encodesObservations[0].shape[0]
+    # padded_actions =pad_action_sequences(demoActions, max_length)
 
 
-    dataLoaderPath = "state_action_data.pt"
-    saveDataLoader(encodesObservations, padded_actions, dataLoaderPath)
-    dataLoader = loadDataLoader(dataLoaderPath)
+    # dataLoaderPath = "state_action_data.pt"
+    # saveDataLoader(encodesObservations, padded_actions, dataLoaderPath)
+    # dataLoader = loadDataLoader(dataLoaderPath)
 
-    print("DATA SAVED!")
-    # print("ACTINS: ", actions)
+    # print("DATA SAVED!")
 
 
 if __name__ == "__main__":
