@@ -84,7 +84,8 @@ public class StateRecorder : MonoBehaviour
     void CaptureState(){
         Vector3 p = location.transform.position;
         // Vector3 r = location.transform.rotation.eulerAngles - startRotation;
-        Vector3 r = location.transform.rotation - startRotation;
+        Quaternion r = location.transform.rotation * Quaternion.Inverse(startRotation);
+        // C = A * Quaternion.Inverse(B);
 
         bool gripping;
         if(isVR){
