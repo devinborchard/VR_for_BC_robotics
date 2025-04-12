@@ -16,7 +16,7 @@ public class StateRecorder : MonoBehaviour
 
     private string filePath;
 
-    private Vector3 startRotation;
+    private Quaternion startRotation;
 
     public float totalTime;
     public bool demoStarted;
@@ -34,7 +34,8 @@ public class StateRecorder : MonoBehaviour
     void Start()
     {
         isVR = SceneManager.GetActiveScene().name.Contains("VR");
-        startRotation = location.transform.rotation.eulerAngles;
+        // startRotation = location.transform.rotation.eulerAngles;
+        startRotation = location.transform.rotation;
         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
         filePath = Application.persistentDataPath + $"/{currentDateTime}/demo.txt";
         totalTime = 0;
@@ -82,7 +83,8 @@ public class StateRecorder : MonoBehaviour
 
     void CaptureState(){
         Vector3 p = location.transform.position;
-        Vector3 r = location.transform.rotation.eulerAngles - startRotation;
+        // Vector3 r = location.transform.rotation.eulerAngles - startRotation;
+        Vector3 r = location.transform.rotation - startRotation;
 
         bool gripping;
         if(isVR){
@@ -98,7 +100,7 @@ public class StateRecorder : MonoBehaviour
         int grippedState = 0;
         if(gripping){grippedState = 1;}
 
-        string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, G: {grippedState}";
+        string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, RW: {r.w}, G: {grippedState}";
         string stateString = $"T: {totalTime}, {robotState}, D: {finished}\n";
 
         AppendToFile(stateString);
@@ -123,7 +125,7 @@ public class StateRecorder : MonoBehaviour
         if(done){
             timeDone += Time.deltaTime;
             if(timeDone > 1){
-                gameObject.GetComponent<EpisodeController>().EndEpisode(true);       
+                gameObject.GetComponent<EpisodeController>().EndEpisode();       
             }
         }
     }

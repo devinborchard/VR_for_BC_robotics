@@ -11,12 +11,7 @@ public class EpisodeController : MonoBehaviour
         stateRecorder = GetComponent<StateRecorder>();
     }
 
-    public void EndEpisode(bool status){
-        if(status){
-            stateRecorder.AppendToFile("success");
-        }else{
-            stateRecorder.AppendToFile("fail");
-        }
+    public void EndEpisode(){
         UnityEditor.EditorApplication.isPlaying = false;
     }
 
@@ -24,7 +19,7 @@ public class EpisodeController : MonoBehaviour
     void Update()
     {
         if(stateRecorder.totalTime >= 30){
-            EndEpisode(false);
+            EndEpisode();
         }
     }
 }

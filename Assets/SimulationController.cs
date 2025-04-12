@@ -98,7 +98,7 @@ public class SimulationController : MonoBehaviour
     {
         if (step >= actions.Count - 1)
         {
-            // episodeController.GetComponent<EpisodeController>().EndEpisode(true); // bool val doesn't matter here
+            // episodeController.GetComponent<EpisodeController>().EndEpisode();
             return;
         }
 
