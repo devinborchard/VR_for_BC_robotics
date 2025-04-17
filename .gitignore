@@ -1,9 +1,8 @@
-Packages/
 UserSettings/
 
 Logs/
 Library/
-ProjectSettings/
+
 .vs/
 .vscode/
 .vsconfig
