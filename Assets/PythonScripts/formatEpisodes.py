@@ -11,23 +11,30 @@ import torchvision.models as models
 episodesDirectory = "c:/Users/Devin/AppData/LocalLow/DefaultCompany/CS933 Project/"
 
 
-# def parseState(string):
-#     trimmedString = string.strip(" ")
-#     stringsList = trimmedString.split(",")
-#     parsedState = []
-#     for string in stringsList:
-#         parsedState.append(float(string.split(':')[1]))
-#     return parsedState[0], parsedState[1:] #dont return the time feature
+def parseState(string):
+    trimmedString = string.strip(" ")
+    stringsList = trimmedString.split(",")
+    parsedState = []
+    for string in stringsList:
+        parsedState.append(float(string.split(':')[1]))
+    return parsedState
 
-# def parseStates(stateStrings):
-#     parsedStates = []
-#     times = []
-#     for string in stateStrings:
-#         time, state = parseState(string)
-#         parsedStates.append(state)
-#         times.append(time)
+def parseStates(stateStrings):
+    times = []
+    dones = []
+    eef_pos = []
+    eef_quat = []
+    gripper = []
+    for string in stateStrings:
+        state = parseState(string)
 
-#     return times, parsedStates
+        times.append(state[0])
+        eef_pos.append([state[1], state[2], state[3]])
+        eef_quat.append([state[4], state[5], state[6], state[7]])
+        gripper.append(state[8])
+        dones.append(state[9])
+
+    return times, dones, eef_pos, eef_quat, gripper
 
 # def createActions(states):
 #     actions = []
@@ -156,11 +163,15 @@ def main():
     demoActions = []
 
     for folder in demoFolders:
+        print("FOLDER: ", folder)
         f = open(episodesDirectory+f'{folder}/demo.txt', "r")
         stateString = f.read()
         states = stateString.split('\n')
+
+        states = states[:-1] #remove empty newline
         
-        # times, parsedStates = parseStates(states)
+        print("States: ", states)
+        times, dones, eef_pos, eef_quat, gripper = parseStates(states)
 
         # # print(parsedStates)
 
