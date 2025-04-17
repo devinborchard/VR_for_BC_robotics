@@ -13,7 +13,7 @@ public class StateRecorder : MonoBehaviour
     public GameObject robot;
     public float logInterval = 1f / 20f; // 20 Hz (every 0.033s)
     private float timer = 0f;
-
+    public string basePath;
     private string filePath;
 
     private Quaternion startRotation;
@@ -37,7 +37,7 @@ public class StateRecorder : MonoBehaviour
         // startRotation = location.transform.rotation.eulerAngles;
         startRotation = location.transform.rotation;
         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        filePath = Application.persistentDataPath + $"/{currentDateTime}/demo.txt";
+        filePath = $"{basePath}/{currentDateTime}/demo.txt";
         totalTime = 0;
         Debug.Log($"Writing to file: {filePath}");
 
@@ -45,9 +45,9 @@ public class StateRecorder : MonoBehaviour
         agentCam.targetTexture = rt;
         outerCam.targetTexture = rt;
 
-        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime));
-        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "overCaptures"));
-        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, currentDateTime, "handCaptures"));
+        Directory.CreateDirectory(Path.Combine(basePath, currentDateTime));
+        Directory.CreateDirectory(Path.Combine(basePath, currentDateTime, "overCaptures"));
+        Directory.CreateDirectory(Path.Combine(basePath, currentDateTime, "handCaptures"));
 
         done = false;
         demoStarted = true;
@@ -78,7 +78,7 @@ public class StateRecorder : MonoBehaviour
         var Bytes = Image.EncodeToPNG();
         Destroy(Image);
 
-        File.WriteAllBytes(Application.persistentDataPath + "/" + currentDateTime + "/"+path+"/"  + totalTime + ".png", Bytes);
+        File.WriteAllBytes(basePath + "/" + currentDateTime + "/"+path+"/"  + totalTime + ".png", Bytes);
     }
 
     void CaptureState(){

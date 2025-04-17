@@ -91,11 +91,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   location: {fileID: 0}
-  targetObject: {fileID: 0}
   robot: {fileID: 0}
   logInterval: 0.033333335
+  basePath: 
   totalTime: 0
   demoStarted: 0
+  done: 0
   simulation: 0
   agentCam: {fileID: 0}
   outerCam: {fileID: 4580797481678980821}
@@ -164,7 +165,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

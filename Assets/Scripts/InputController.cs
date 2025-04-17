@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class InputController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float gripSpeed = 0.025f;
+    public float gripSpeed = 0.075f;
     public float handSpeed = 0.25f;
     public float handLiftSpeed = 0.25f;
 
@@ -120,7 +120,6 @@ public class InputController : MonoBehaviour
         Vector3 movement = new Vector3(moveX*-1, moveY*-1, moveZ) * Time.deltaTime;
         hand.transform.Translate(movement);
         
-        Debug.Log($"POS: {handRotateRef.transform.position.y}, {tableTopY}");
         if(handRotateRef.transform.position.y < tableTopY){
             hand.transform.position = last;
         }
