@@ -16,7 +16,8 @@ public class StateRecorder : MonoBehaviour
     public string basePath;
     private string filePath;
 
-    private Quaternion startRotation;
+    private Quaternion startRotationQ;
+    private Vector3 startRotation;
 
     public float totalTime;
     public bool demoStarted;
@@ -34,8 +35,8 @@ public class StateRecorder : MonoBehaviour
     void Start()
     {
         isVR = SceneManager.GetActiveScene().name.Contains("VR");
-        // startRotation = location.transform.rotation.eulerAngles;
-        startRotation = location.transform.rotation;
+        startRotation = location.transform.rotation.eulerAngles;
+        startRotationQ = location.transform.rotation;
         currentDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
         filePath = $"{basePath}/{currentDateTime}/demo.txt";
         totalTime = 0;
@@ -83,9 +84,8 @@ public class StateRecorder : MonoBehaviour
 
     void CaptureState(){
         Vector3 p = location.transform.position;
-        // Vector3 r = location.transform.rotation.eulerAngles - startRotation;
-        Quaternion r = location.transform.rotation * Quaternion.Inverse(startRotation);
-        // C = A * Quaternion.Inverse(B);
+        Vector3 r = location.transform.rotation.eulerAngles - startRotation;
+        Quaternion q = location.transform.rotation * Quaternion.Inverse(startRotationQ);
 
         bool gripping;
         if(isVR){
@@ -101,11 +101,10 @@ public class StateRecorder : MonoBehaviour
         int grippedState = 0;
         if(gripping){grippedState = 1;}
 
-        string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}, RW: {r.w}, G: {grippedState}";
+        string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, QX: {q.x:F4}, QY: {q.y:F4}, QZ: {q.z:F4}, QW: {q.w}, RX:{r.x}, RY:{r.y}, RZ:{r.z}, G: {grippedState}";
         string stateString = $"T: {totalTime}, {robotState}, D: {finished}\n";
 
         AppendToFile(stateString);
-
         // Debug.Log($"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}");
     }
 

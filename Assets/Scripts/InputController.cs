@@ -28,8 +28,6 @@ public class InputController : MonoBehaviour
     private float moveZ;
 
     private float RotateX;
-    private float RotateY;
-    private float RotateZ;
 
     public bool gripped; //set elsewhere in DetectGripped
 
@@ -50,8 +48,6 @@ public class InputController : MonoBehaviour
         moveY = 0;
         moveZ = 0;
         RotateX = 0;
-        RotateY = 0;
-        RotateZ = 0;
         gripped = false;
 
         tableTopY = tableTop.transform.position.y;
