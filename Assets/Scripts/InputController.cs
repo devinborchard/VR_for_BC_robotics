@@ -125,10 +125,10 @@ public class InputController : MonoBehaviour
         
         float pitch = 0;
         if(DR){
-            pitch = rotateSpeed;
+            pitch = -rotateSpeed;
         }
         if(DL){
-            pitch = -rotateSpeed;
+            pitch = rotateSpeed;
         }
 
         float roll = 0;

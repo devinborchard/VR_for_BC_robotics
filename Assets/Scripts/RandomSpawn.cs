@@ -5,10 +5,11 @@ using UnityEngine;
 public class RandomSpawn : MonoBehaviour
 {
     public float maxDistance = 0.1f;
+    public int seedOffset;
 
     void Start()
     {
-        // Random position within a circle on the XZ plane
+        Random.InitState(GameData.randomSeed + (seedOffset * 10)); // seed is any int
         Vector2 randomOffset = Random.insideUnitCircle * maxDistance;
         Vector3 newPosition = transform.position + new Vector3(randomOffset.x, 0f, randomOffset.y);
         transform.position = newPosition;

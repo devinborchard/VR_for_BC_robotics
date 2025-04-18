@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: d42b98ecaa20cae42b1dee19d645afb7, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -286,6 +286,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StackTask
       objectReference: {fileID: 0}
+    - target: {fileID: 6977209863389304266, guid: 05dee2ce60749884ea38ea1dd4d67712, type: 3}
+      propertyPath: seedOffset
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7175525493196581000, guid: 05dee2ce60749884ea38ea1dd4d67712, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -325,6 +329,10 @@ PrefabInstance:
     - target: {fileID: 7175525493196581000, guid: 05dee2ce60749884ea38ea1dd4d67712, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608760451052631994, guid: 05dee2ce60749884ea38ea1dd4d67712, type: 3}
+      propertyPath: seedOffset
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

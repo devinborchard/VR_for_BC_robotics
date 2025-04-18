@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HangController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class HangController : MonoBehaviour
     private bool mugInZone;
     public GameObject robot;
     private InputController inputController;
+    private InputControllerVR inputControllerVr;
 
     private float hangTimer = 0f;
     private float hangTime = 2f;
@@ -19,7 +21,13 @@ public class HangController : MonoBehaviour
     void Start()
     {
         mugInZone = false;
-        inputController = robot.GetComponent<InputController>();
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName.Contains("Basic")){
+            inputController = robot.GetComponent<InputController>();
+        }
+        else{
+            inputControllerVr = robot.GetComponent<InputControllerVR>();
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -42,7 +50,15 @@ public class HangController : MonoBehaviour
     }
 
     bool CheckHung(){
-        bool gripping = inputController.gripping;
+         bool gripping;
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName.Contains("Basic")){
+            gripping = inputController.gripping;
+        }else{
+            gripping = inputControllerVr.gripping;
+        }
+
         if(mugInZone && !gripping){
             return true;
         }

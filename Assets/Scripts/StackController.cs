@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StackController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class StackController : MonoBehaviour
     private bool block2InZone;
     public GameObject robot;
     private InputController inputController;
+    private InputControllerVR inputControllerVr;
 
     private float stackedTimer = 0f;
     private float stackedTime = 3f;
@@ -22,8 +24,13 @@ public class StackController : MonoBehaviour
     {
         block1InZone = false;
         block2InZone = false;
-
-        inputController = robot.GetComponent<InputController>();
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName.Contains("Basic")){
+            inputController = robot.GetComponent<InputController>();
+        }
+        else{
+            inputControllerVr = robot.GetComponent<InputControllerVR>();
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -52,7 +59,15 @@ public class StackController : MonoBehaviour
     }
 
     bool CheckStacked(){
-        bool gripping = inputController.gripping;
+        bool gripping;
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName.Contains("Basic")){
+            gripping = inputController.gripping;
+        }else{
+            gripping = inputControllerVr.gripping;
+        }
+
         if(block1InZone && block2InZone && block2.transform.position.y - block1.transform.position.y > 0.01 && !gripping){
             return true;
         }

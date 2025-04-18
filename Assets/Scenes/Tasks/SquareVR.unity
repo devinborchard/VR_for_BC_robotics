@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 2a5b4172a3b2a0a4585e0931761e724c, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -442,6 +442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SquareTask
       objectReference: {fileID: 0}
+    - target: {fileID: 7028407151579558656, guid: 1d7eac68d8ccc0446a51b6d12e48ff86, type: 3}
+      propertyPath: episodeController
+      value: 
+      objectReference: {fileID: 1634241534}
     - target: {fileID: 7930373222285910588, guid: 1d7eac68d8ccc0446a51b6d12e48ff86, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

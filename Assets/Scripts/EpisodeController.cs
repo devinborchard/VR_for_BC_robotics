@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EpisodeController : MonoBehaviour
 {
@@ -12,7 +13,14 @@ public class EpisodeController : MonoBehaviour
     }
 
     public void EndEpisode(){
-        UnityEditor.EditorApplication.isPlaying = false;
+        // UnityEditor.EditorApplication.isPlaying = false;
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if(currentSceneName.Contains("Basic")){
+            SceneManager.LoadScene("BasicMenu");
+        }
+        else{
+            SceneManager.LoadScene("VRMenu");
+        }
     }
 
     // Update is called once per frame

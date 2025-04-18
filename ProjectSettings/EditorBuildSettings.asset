@@ -4,7 +4,28 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/BasicMenu.unity
+    guid: c550a60541e1c824e94f16979a8cd969
+  - enabled: 1
+    path: Assets/Scenes/Tasks/MugBasic.unity
+    guid: 39548f98feb6a7341a88a1d943778756
+  - enabled: 1
+    path: Assets/Scenes/Tasks/MugVR.unity
+    guid: bda852d9c51a1794fb12a3cf16eca147
+  - enabled: 1
+    path: Assets/Scenes/Tasks/SquareBasic.unity
+    guid: 4852e84080f2d984e91bb3628981cad5
+  - enabled: 1
+    path: Assets/Scenes/Tasks/SquareVR.unity
+    guid: 3ec9dfd9d50b286499774a3cb65e959a
+  - enabled: 1
+    path: Assets/Scenes/Tasks/StackBasic.unity
+    guid: f240e5b486e182146822f64d9722fa15
+  - enabled: 1
+    path: Assets/Scenes/Tasks/StackVR.unity
+    guid: 47e935d561409e7409518263235e0a32
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3bc0922845c75d3499754062f6969d7b, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: e0f5c8e154c6f9440a908c01f722d762, type: 2}
