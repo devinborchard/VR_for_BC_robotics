@@ -69,14 +69,17 @@ public class HangController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if(hangTimer >= hangTime){
-            episodeController.GetComponent<StateRecorder>().done = true;
+        if(!GameData.isSim){
+            if(hangTimer >= hangTime){
+                episodeController.GetComponent<StateRecorder>().done = true;
+            }
+            bool hung = CheckHung();
+            if(hung){
+                hangTimer = hangTimer + Time.deltaTime;
+            }else{
+                hangTimer = 0;
+            }
         }
-        bool hung = CheckHung();
-        if(hung){
-            hangTimer = hangTimer + Time.deltaTime;
-        }else{
-            hangTimer = 0;
-        }
+        
     }
 }

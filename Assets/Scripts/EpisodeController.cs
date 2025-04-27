@@ -18,8 +18,11 @@ public class EpisodeController : MonoBehaviour
         if(currentSceneName.Contains("Basic")){
             SceneManager.LoadScene("BasicMenu");
         }
-        else{
+        else if(currentSceneName.Contains("VR")){
             SceneManager.LoadScene("VRMenu");
+        }
+        else{
+            UnityEditor.EditorApplication.isPlaying = false;
         }
     }
 

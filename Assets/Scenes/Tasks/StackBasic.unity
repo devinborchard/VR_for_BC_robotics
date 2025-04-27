@@ -1211,6 +1211,10 @@ PrefabInstance:
       propertyPath: simulation
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4580797481678980821, guid: f4f3d2d035f0c7b4793ad4aa378db3d0, type: 3}
+      propertyPath: m_Depth
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

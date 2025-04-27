@@ -15,7 +15,7 @@ public class StackController : MonoBehaviour
     private InputControllerVR inputControllerVr;
 
     private float stackedTimer = 0f;
-    private float stackedTime = 3f;
+    private float stackedTime = 1f;
     public GameObject episodeController;
 
     // Start is called before the first frame update
@@ -64,8 +64,13 @@ public class StackController : MonoBehaviour
         string currentSceneName = SceneManager.GetActiveScene().name;
         if(currentSceneName.Contains("Basic")){
             gripping = inputController.gripping;
-        }else{
+
+        }
+        else if(currentSceneName.Contains("VR")){
             gripping = inputControllerVr.gripping;
+        }
+        else{
+            gripping = robot.GetComponent<InputController>().gripping;
         }
 
         if(block1InZone && block2InZone && block2.transform.position.y - block1.transform.position.y > 0.01 && !gripping){
@@ -78,14 +83,16 @@ public class StackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if(stackedTimer >= stackedTime){
-            episodeController.GetComponent<StateRecorder>().done = true;
-        }
-        bool stacked = CheckStacked();
-        if(stacked){
-            stackedTimer = stackedTimer + Time.deltaTime;
-        }else{
-            stackedTimer = 0;
-        }
+        if(!GameData.isSim){
+            if(stackedTimer >= stackedTime){
+                episodeController.GetComponent<StateRecorder>().done = true;
+            }
+            bool stacked = CheckStacked();
+            if(stacked){
+                stackedTimer = stackedTimer + Time.deltaTime;
+            }else{
+                stackedTimer = 0;
+            }
+        } 
     }
 }

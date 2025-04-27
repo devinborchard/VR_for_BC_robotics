@@ -35,6 +35,7 @@ public class StateRecorder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        simulation = GameData.isSim;
         isVR = SceneManager.GetActiveScene().name.Contains("VR");
         startRotation = location.transform.rotation.eulerAngles;
         startRotationQ = location.transform.rotation;
@@ -48,13 +49,17 @@ public class StateRecorder : MonoBehaviour
         agentCam.targetTexture = rt;
         outerCam.targetTexture = rt;
 
-        Directory.CreateDirectory(Path.Combine(basePath, demoName));
-        Directory.CreateDirectory(Path.Combine(basePath, demoName, "overCaptures"));
-        Directory.CreateDirectory(Path.Combine(basePath, demoName, "handCaptures"));
+        agentCam.fieldOfView = 32.5f;
+        outerCam.fieldOfView = 40f;
+
+
+        // Directory.CreateDirectory(Path.Combine(basePath, demoName));
+        // Directory.CreateDirectory(Path.Combine(basePath, demoName, "overCaptures"));
+        // Directory.CreateDirectory(Path.Combine(basePath, demoName, "handCaptures"));
 
         done = false;
         demoStarted = true;
-        if(isVR){
+        if(simulation || isVR){
             demoStarted = false;
         }
     }
@@ -66,7 +71,7 @@ public class StateRecorder : MonoBehaviour
         }
     }
 
-    void CamCapture(Camera camera, string path){
+    public byte[] CamCapture(Camera camera, string path){
 
         RenderTexture currentRT = RenderTexture.active;
         RenderTexture.active = camera.targetTexture;
@@ -81,10 +86,13 @@ public class StateRecorder : MonoBehaviour
         var Bytes = Image.EncodeToPNG();
         Destroy(Image);
 
-        File.WriteAllBytes(basePath + "/" + demoName + "/"+path+"/"  + totalTime + ".png", Bytes);
+        if(path != ""){
+            File.WriteAllBytes(basePath + "/" + demoName + "/"+path+"/"  + totalTime + ".png", Bytes);
+        }
+        return Bytes;
     }
 
-    void CaptureState(){
+    public string CaptureState(){
         Vector3 p = location.transform.position;
         Vector3 r = location.transform.rotation.eulerAngles - startRotation;
         Quaternion q = location.transform.rotation * Quaternion.Inverse(startRotationQ);
@@ -106,29 +114,30 @@ public class StateRecorder : MonoBehaviour
         string robotState = $"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, QX: {q.x:F4}, QY: {q.y:F4}, QZ: {q.z:F4}, QW: {q.w}, RX:{r.x}, RY:{r.y}, RZ:{r.z}, G: {grippedState}";
         string stateString = $"T: {totalTime}, {robotState}, D: {finished}\n";
 
-        AppendToFile(stateString);
+        // AppendToFile(stateString);
+        return stateString;
         // Debug.Log($"X: {p.x:F4}, Y: {p.y:F4}, Z: {p.z:F4}, RX: {r.x:F4}, RY: {r.y:F4}, RZ: {r.z:F4}");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(demoStarted && !simulation){
-            totalTime += Time.deltaTime;
-            timer += Time.deltaTime;
-            if (timer >= logInterval){
-                CaptureState();
-                CamCapture(agentCam, "handCaptures");
-                CamCapture(outerCam, "overCaptures");
-                timer = 0f; // Reset timer
-            }
-        }
+    //     if(demoStarted && !simulation){
+    //         totalTime += Time.deltaTime;
+    //         timer += Time.deltaTime;
+    //         if (timer >= logInterval){
+    //             CaptureState();
+    //             CamCapture(agentCam, "handCaptures");
+    //             CamCapture(outerCam, "overCaptures");
+    //             timer = 0f; // Reset timer
+    //         }
+    //     }
 
-        if(done){
-            timeDone += Time.deltaTime;
-            if(timeDone > 1){
-                gameObject.GetComponent<EpisodeController>().EndEpisode();       
-            }
-        }
+    //     if(done){
+    //         timeDone += Time.deltaTime;
+    //         if(timeDone > 1){
+    //             gameObject.GetComponent<EpisodeController>().EndEpisode();       
+    //         }
+    //     }
     }
 }
